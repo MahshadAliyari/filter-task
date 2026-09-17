@@ -382,9 +382,11 @@ body {
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
-.product-image {
+.product-image img {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 220px;
+  object-fit: contain;
+  
 
   display: flex;
   align-items: center;
@@ -399,14 +401,6 @@ body {
   );
 }
 
-.product-image img {
-  width: 88%;
-  height: 88%;
-
-  object-fit: contain;
-
-  object-position: center;
-}
 .product-card:hover .product-image img {
   transform: scale(1.05);
 }
