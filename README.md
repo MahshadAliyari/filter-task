@@ -311,3 +311,10 @@ Dynamic UI Updates
 The main focus of this task is understanding how JavaScript can connect user interactions with dynamic changes in the UI.
 
 ---
+
+## Live Demo
+
+
+---
+
+## AI Transparency
