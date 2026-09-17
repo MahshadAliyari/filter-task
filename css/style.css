@@ -87,10 +87,6 @@ a {
 
   padding-bottom: 35px;
 }
-/* =========================================
-   HEADER
-========================================= */
-
 .hero {
   position: relative;
 
@@ -117,14 +113,10 @@ a {
 
   border: 1px solid var(--border);
 
-  border-radius: 0 0 22px 22px;
+  border-radius: 22px 22px 22px 22px;
 
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
 }
-
-/* =========================================
-   HEADER TOP
-========================================= */
 
 .header-top {
   min-height: 60px;
@@ -141,13 +133,7 @@ a {
   border-bottom: 1px solid var(--border);
 
   backdrop-filter: blur(18px);
-
-  -webkit-backdrop-filter: blur(18px);
 }
-
-/* =========================================
-   LOGO
-========================================= */
 
 .luka-logo {
   display: flex;
@@ -205,10 +191,6 @@ a {
   font-weight: 500;
 }
 
-/* =========================================
-   MOBILE MENU
-========================================= */
-
 .header-menu {
   width: 35px;
   height: 35px;
@@ -241,10 +223,6 @@ a {
 
   transform: translateY(-2px);
 }
-
-/* =========================================
-   NAVIGATION
-========================================= */
 
 .main-nav {
   width: 100%;
@@ -328,10 +306,6 @@ a {
   border-radius: 999px;
 }
 
-/* =========================================
-   HERO CONTENT
-========================================= */
-
 .hero-content {
   padding: 25px 12px 23px;
 }
@@ -393,11 +367,6 @@ a {
 
   line-height: 1.8;
 }
-
-/* =========================================
-   TABLET
-========================================= */
-
 @media (min-width: 768px) {
   .hero {
     margin-bottom: 28px;
@@ -461,10 +430,6 @@ a {
   }
 }
 
-/* =========================================
-   DESKTOP
-========================================= */
-
 @media (min-width: 1100px) {
   .header-top {
     min-height: 76px;
@@ -516,8 +481,6 @@ a {
   box-shadow: var(--shadow);
 
   backdrop-filter: blur(16px);
-
-  -webkit-backdrop-filter: blur(16px);
 }
 
 .filter-section {
@@ -657,8 +620,6 @@ a {
   border-radius: var(--radius-md);
 
   backdrop-filter: blur(16px);
-
-  -webkit-backdrop-filter: blur(16px);
 }
 
 .products-count {
@@ -831,9 +792,9 @@ a {
 
   display: -webkit-box;
 
-  -webkit-box-orient: vertical;
+  box-orient: vertical;
 
-  -webkit-line-clamp: 2;
+  line-clamp: 2;
 
   overflow: hidden;
 }
@@ -853,9 +814,9 @@ a {
 
   display: -webkit-box;
 
-  -webkit-box-orient: vertical;
+  box-orient: vertical;
 
-  -webkit-line-clamp: 2;
+  line-clamp: 2;
 
   overflow: hidden;
 }
