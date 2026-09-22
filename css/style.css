@@ -236,7 +236,7 @@ a {
   scrollbar-width: none;
 }
 
-.main-nav::-webkit-scrollbar {
+.main-nav::scrollbar {
   display: none;
 }
 
@@ -621,6 +621,57 @@ a {
 
   backdrop-filter: blur(16px);
 }
+```css
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+}
+
+.search-box label {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 9px 12px;
+
+  color: var(--text);
+  background: var(--background-light);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  outline: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-box input:focus {
+  border-color: var(--primary);
+
+  background: rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+```
 
 .products-count {
   color: var(--text-muted);
