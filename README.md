@@ -280,35 +280,25 @@ Return the filters to their default values and verify that all products are disp
 
 ---
 
+# 🔎 Live Product Search
+
+A live search feature has been added to the digital products store.
+
+## Features
+
+- Search products while typing
+- Filter products by name
+- Use the `input` event
+- Use `includes()` to match search results
+- Use `setTimeout` and `clearTimeout` for a simple debounce
+
+---
+
 ## 🛠️ Technologies
 
 * HTML
 * CSS
 * JavaScript
-
----
-
-## Learning Outcomes
-
-After completing this task, the following concepts were practiced:
-
-```text
-DOM Manipulation
-      ↓
-Event Handling
-      ↓
-Array Methods
-      ↓
-Filtering
-      ↓
-Sorting
-      ↓
-Conditional Logic
-      ↓
-Dynamic UI Updates
-```
-
-The main focus of this task is understanding how JavaScript can connect user interactions with dynamic changes in the UI.
 
 ---
 
@@ -318,3 +308,7 @@ The main focus of this task is understanding how JavaScript can connect user int
 ---
 
 ## AI Transparency
+
+- **Section:** JavaScript logic (live search and filtering).
+- **How I used it:** I asked the AI to explain the JavaScript concepts required for the task. After writing the code myself, I asked it to guide me step by step toward fixing the issues in my code, rather than giving me the fixes directly.
+- **What I changed:** I implemented and corrected the logic myself throughout the process; the AI was used for concept explanation and guided debugging, not for generating or directly fixing the code.
