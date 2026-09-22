@@ -1,3 +1,7 @@
+// =========================
+// PRODUCTS DATA
+// =========================
+
 const products = [
   {
     name: "MacBook Pro",
@@ -5,8 +9,6 @@ const products = [
     category: "laptop",
     stock: "in-stock",
     image: "images/laptop.webp",
-    badge: "۱۵٪ تخفیف",
-    badgeType: "discount",
   },
   {
     name: "iPhone 15",
@@ -21,8 +23,6 @@ const products = [
     category: "headphone",
     stock: "in-stock",
     image: "images/headphone.webp",
-    badge: "۱۰٪ تخفیف",
-    badgeType: "discount",
   },
   {
     name: "AirPods",
@@ -37,8 +37,6 @@ const products = [
     category: "laptop",
     stock: "in-stock",
     image: "images/laptop1.webp",
-    badge: "۱۲٪ تخفیف",
-    badgeType: "discount",
   },
   {
     name: "Samsung Galaxy S24",
@@ -46,8 +44,6 @@ const products = [
     category: "mobile",
     stock: "out-of-stock",
     image: "images/phone.webp",
-    badge: "ناموجود",
-    badgeType: "stock",
   },
   {
     name: "Sony WH-1000XM5",
@@ -55,8 +51,6 @@ const products = [
     category: "headphone",
     stock: "in-stock",
     image: "images/head.webp",
-    badge: "۸٪ تخفیف",
-    badgeType: "discount",
   },
   {
     name: "Apple Watch Series 9",
@@ -87,6 +81,14 @@ const sortProducts = document.querySelector("#sortProducts");
 
 const resetButtons = document.querySelectorAll(".reset-btn");
 
+const searchInput = document.querySelector("#searchInput");
+
+// =========================
+// SEARCH DEBOUNCE
+// =========================
+
+let searchTimer;
+
 // =========================
 // RENDER PRODUCTS
 // =========================
@@ -94,71 +96,37 @@ const resetButtons = document.querySelectorAll(".reset-btn");
 function renderProducts(filteredProducts) {
   productsGrid.innerHTML = "";
 
-  filteredProducts.map((product) => {
+  filteredProducts.forEach((product) => {
     const productCard = document.createElement("article");
 
     productCard.className = "product-card";
 
-    // ساخت لیبل محصول
-    let badgeHTML = "";
-
-    if (product.badge) {
-      if (product.badgeType === "discount") {
-        badgeHTML = `
-          <span class="discount-badge">
-            ${product.badge}
-          </span>
-        `;
-      }
-
-      if (product.badgeType === "stock") {
-        badgeHTML = `
-          <span class="stock-badge">
-            ${product.badge}
-          </span>
-        `;
-      }
-    }
-
     productCard.innerHTML = `
       <div class="product-image">
-
-        <img 
-          src="${product.image}" 
-          alt="${product.name}"
-        >
-
-        ${badgeHTML}
-
+        <img src="${product.image}" alt="${product.name}">
       </div>
 
       <div class="product-info">
-
         <span class="product-category">
           ${product.category}
         </span>
 
         <h3>${product.name}</h3>
 
-        <div class="product-footer">
+        <strong class="product-price">
+          ${product.price.toLocaleString("fa-IR")} تومان
+        </strong>
 
-          <strong class="product-price">
-            ${product.price.toLocaleString("fa-IR")} تومان
-          </strong>
-
-          <button class="view-btn" type="button">
-            مشاهده
-          </button>
-
-        </div>
-
+        <button type="button" class="product-btn">
+          مشاهده
+        </button>
       </div>
     `;
 
     productsGrid.append(productCard);
   });
 
-  productsCount.textContent = filteredProducts.length;
+  productsCount.textContent = filteredProducts.length.toLocaleString("fa-IR");
 }
 
 // =========================
@@ -166,20 +134,18 @@ function renderProducts(filteredProducts) {
 // =========================
 
 function filterProducts() {
-  // CATEGORY
   const selectedCategories = Array.from(categoryFilters)
     .filter((checkbox) => checkbox.checked)
     .map((checkbox) => checkbox.dataset.category);
 
-  // AVAILABILITY
   const selectedAvailability = Array.from(availabilityFilters)
     .filter((checkbox) => checkbox.checked)
     .map((checkbox) => checkbox.value);
 
-  // PRICE
   const maxPrice = Number(priceRange.value);
 
-  // FILTER
+  const searchValue = searchInput.value.trim().toLowerCase();
+
   let filteredProducts = products.filter((product) => {
     const categoryMatch =
       selectedCategories.includes("all") ||
@@ -191,39 +157,27 @@ function filterProducts() {
 
     const priceMatch = product.price <= maxPrice;
 
-    return categoryMatch && availabilityMatch && priceMatch;
+    const searchMatch =
+      searchValue === "" || product.name.toLowerCase().includes(searchValue);
+
+    return categoryMatch && availabilityMatch && priceMatch && searchMatch;
   });
 
   // =========================
-  // SORT
+  // SORT PRODUCTS
   // =========================
 
-  const sortValue = sortProducts.value;
-
-  // CHEAPEST
-  if (sortValue === "cheap") {
-    filteredProducts.sort((a, b) => {
-      return a.price - b.price;
-    });
+  if (sortProducts.value === "cheap") {
+    filteredProducts.sort((a, b) => a.price - b.price);
   }
 
-  // MOST EXPENSIVE
-  else if (sortValue === "expensive") {
-    filteredProducts.sort((a, b) => {
-      return b.price - a.price;
-    });
+  if (sortProducts.value === "expensive") {
+    filteredProducts.sort((a, b) => b.price - a.price);
   }
 
-  // NAME
-  else if (sortValue === "name") {
-    filteredProducts.sort((a, b) => {
-      return a.name.localeCompare(b.name);
-    });
+  if (sortProducts.value === "name") {
+    filteredProducts.sort((a, b) => a.name.localeCompare(b.name, "en"));
   }
-
-  // =========================
-  // RENDER
-  // =========================
 
   renderProducts(filteredProducts);
 }
@@ -234,33 +188,28 @@ function filterProducts() {
 
 categoryFilters.forEach((checkbox) => {
   checkbox.addEventListener("change", () => {
-    const allCheckbox = document.querySelector('[data-category="all"]');
+    const allCheckbox = document.querySelector(
+      '.category-filter[data-category="all"]',
+    );
 
-    // ALL CATEGORY
-    if (checkbox.dataset.category === "all") {
-      if (checkbox.checked) {
-        categoryFilters.forEach((item) => {
-          if (item !== checkbox) {
-            item.checked = false;
-          }
-        });
-      }
+    if (checkbox.dataset.category === "all" && checkbox.checked) {
+      categoryFilters.forEach((item) => {
+        if (item !== allCheckbox) {
+          item.checked = false;
+        }
+      });
     }
 
-    // OTHER CATEGORIES
-    else {
-      if (checkbox.checked) {
-        allCheckbox.checked = false;
-      }
+    if (checkbox.dataset.category !== "all" && checkbox.checked) {
+      allCheckbox.checked = false;
+    }
 
-      const selectedCategories = Array.from(categoryFilters)
-        .filter((item) => item.checked)
-        .map((item) => item.dataset.category);
+    const selectedCategories = Array.from(categoryFilters).filter(
+      (item) => item.checked,
+    );
 
-      // IF NOTHING IS SELECTED
-      if (selectedCategories.length === 0) {
-        allCheckbox.checked = true;
-      }
+    if (selectedCategories.length === 0) {
+      allCheckbox.checked = true;
     }
 
     filterProducts();
@@ -272,13 +221,11 @@ categoryFilters.forEach((checkbox) => {
 // =========================
 
 availabilityFilters.forEach((checkbox) => {
-  checkbox.addEventListener("change", () => {
-    filterProducts();
-  });
+  checkbox.addEventListener("change", filterProducts);
 });
 
 // =========================
-// PRICE RANGE
+// PRICE FILTER
 // =========================
 
 priceRange.addEventListener("input", () => {
@@ -291,39 +238,42 @@ priceRange.addEventListener("input", () => {
 // SORT
 // =========================
 
-sortProducts.addEventListener("change", () => {
-  filterProducts();
+sortProducts.addEventListener("change", filterProducts);
+
+// =========================
+// LIVE SEARCH
+// =========================
+
+searchInput.addEventListener("input", () => {
+  clearTimeout(searchTimer);
+
+  searchTimer = setTimeout(() => {
+    filterProducts();
+  }, 300);
 });
 
 // =========================
-// RESET BUTTONS
+// RESET FILTERS
 // =========================
 
 resetButtons.forEach((button, index) => {
   button.addEventListener("click", () => {
-    // CATEGORY RESET
     if (index === 0) {
       categoryFilters.forEach((checkbox) => {
-        checkbox.checked = false;
+        checkbox.checked = checkbox.dataset.category === "all";
       });
-
-      const allCheckbox = document.querySelector('[data-category="all"]');
-
-      allCheckbox.checked = true;
     }
 
-    // AVAILABILITY RESET
     if (index === 1) {
       availabilityFilters.forEach((checkbox) => {
         checkbox.checked = false;
       });
     }
 
-    // PRICE RESET
     if (index === 2) {
       priceRange.value = 75000000;
 
-      priceValue.textContent = "۷۵,۰۰۰,۰۰۰ تومان";
+      priceValue.textContent = `${Number(priceRange.value).toLocaleString("fa-IR")} تومان`;
     }
 
     filterProducts();
@@ -334,4 +284,4 @@ resetButtons.forEach((button, index) => {
 // INITIAL RENDER
 // =========================
 
-renderProducts(products);
+filterProducts();
